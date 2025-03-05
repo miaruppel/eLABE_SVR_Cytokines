@@ -4,7 +4,7 @@
 % Our cytonkines spreadsheet - n=283
 
 % ----------------------Load in & Organize Data--------------------------
-spreadsheet = readtable('cytokines_final_sheet.csv');
+spreadsheet = readtable('cytokine_data/cytokines_data_sheet.csv');
 
 % generating correlations matrices (run only once and then save as .mat file)
 % num_subjects = height(spreadsheet);
@@ -27,7 +27,7 @@ spreadsheet = readtable('cytokines_final_sheet.csv');
 % save('full_cytokines_corrmat_MR.mat', 'corrmat')
 
 % load in corrmat
-load('full_cytokines_corrmat_MR.mat')
+load('cytokine_data/full_cytokines_corrmat.mat')
 
 % -------------------ACTUAL MODELS vs. NULL MODELS----------------------
 
@@ -94,15 +94,16 @@ toc
 tic
 %%%% INPUTS %%%%%
 num_partitions = 100; % only change if we want to run fewer partitions
+num_scrambles = 10;
+
 
 % change this list when we want to test different covariates
-covariate_list = {'disadv_prenatal','mri_test_pma_scan_dob','screen_delivery_ga_weeks','meanFD','MMR','sex'};
-
+covariate_list = {'disadv_prenatal', 'mri_test_pma_scan_dob', 'screen_delivery_ga_weeks', 'child_sex'};
 
 %%%%%% OUTPUTS %%%%%%%%
 % change the suffix (i.e., origCOV) when different
 % covariates/samples
-[eLABE_predict_origCOV, eLABE_predictNULL_origCOV] = prediction_with_covariates_parallel(corrmat, spreadsheet, covariate_list, num_partitions);
+[eLABE_predict_origCOV, eLABE_predictNULL_origCOV] = prediction_with_covariates_parallel(corrmat, spreadsheet.il6_avg, covariate_list, num_partitions, num_scrambles);
 
 % add specific title 
 title('FULLTERM ONLY, ORIG COVARIATES')

@@ -106,14 +106,6 @@ if (numel(unique(labels(idx_nonNaN))) > 2) && (numel(unique(labels(idx_nonNaN)))
     multi_class = true;
 end
 
-
-% Initialize the parallel pool if it's not already open
-%numCores = feature('numcores');
-%numWorkers = 12; % desired number of workers (based on cores available)
-% if isempty(gcp('nocreate'))  
-%     parpool('local', numWorkers);  % start a parallel pool 
-% end
-
 % ENTER INTO FOLDS OF TRAINING/TESTING
 numFolds = 10;
 
