@@ -98,11 +98,14 @@ num_partitions = 100; % only change if we want to run fewer partitions
 % change this list when we want to test different covariates
 covariate_list = {'disadv_prenatal','mri_test_pma_scan_dob','screen_delivery_ga_weeks','meanFD','MMR','sex'};
 
+% change this when testing different samples
+corrmat = cat(3,corrmat_il6_fullterm); % concatenate
+il6_table = [il6_wFC_fullterm]; % concatenate
 
 %%%%%% OUTPUTS %%%%%%%%
 % change the suffix (i.e., origCOV) when different
 % covariates/samples
-[eLABE_predict_origCOV, eLABE_predictNULL_origCOV] = prediction_with_covariates_parallel(corrmat, spreadsheet, covariate_list, num_partitions);
+[eLABE_predictIL6_origCOV_fulltermONLY, eLABE_predictNULL_origCOV_fulltermONLY] = il6_prediction_with_covariates_parallel(corrmat, il6_table, covariate_list, num_partitions);
 
 % add specific title 
 title('FULLTERM ONLY, ORIG COVARIATES')
