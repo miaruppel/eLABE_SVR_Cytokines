@@ -94,7 +94,9 @@ elseif strcmpi(covs_Y_or_N, 'Y') % including covariates in the model
 
     % plot results
     [~,idx_sorted] = sort([eLABE_predict_origCOV.R2]);
-    figure; plot(1:num_partitions,[eLABE_predict_origCOV(idx_sorted).R2],'ro','MarkerSize',10)
+    fig = figure;
+    %figure; 
+    plot(1:num_partitions,[eLABE_predict_origCOV(idx_sorted).R2],'ro','MarkerSize',10)
     hold on
     
     for i = 1:num_scrambles
@@ -110,6 +112,9 @@ elseif strcmpi(covs_Y_or_N, 'Y') % including covariates in the model
 
     plot_title = sprintf('%s PREDICTION, ORIG COVARIATES', cytokine_type);
     title(plot_title)
+    
+    filename = sprintf('figures/%s_pred_origcovs.fig', cytokine_type);
+    saveas(fig, filename)
     
     % save models 
     covs_type = 'origcovs'; % will need to edit this later most likely 
