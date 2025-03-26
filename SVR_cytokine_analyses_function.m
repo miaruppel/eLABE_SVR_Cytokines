@@ -109,19 +109,46 @@ elseif strcmpi(covs_Y_or_N, 'Y') % including covariates in the model
     ylabel('R2')
 
     axis([0 101 0 0.08])
+    
+    % quick and dirty split of males/females; sloppy and repetitive code that should be fixed later
+    if strcompi(corrmat_path, 'cytokine_data/full_cytokines_corrmat_fullterm_latepreterm_FEMALES.mat')
+        plot_title = sprintf('%s PREDICTION, ORIG COVARIATES, FEMALES', cytokine_type);
+        title(plot_title)
 
-    plot_title = sprintf('%s PREDICTION, ORIG COVARIATES', cytokine_type);
-    title(plot_title)
-    
-    filename = sprintf('figures/%s_pred_origcovs.fig', cytokine_type);
-    saveas(fig, filename)
-    
-    % save models 
-    covs_type = 'origcovs'; % will need to edit this later most likely 
-    save_path = sprintf('cytokine_data/%s_pred_%s.mat', cytokine_type, covs_type);
-    save(save_path, 'eLABE_predict_origCOV', 'eLABE_predictNULL_origCOV', '-v7.3');
+        filename = sprintf('figures/%s_pred_origcovs_FEMALES.fig', cytokine_type);
+        saveas(fig, filename)
+
+        % save models 
+        covs_type = 'origcovs'; % will need to edit this later most likely 
+        save_path = sprintf('cytokine_data/%s_pred_%s_FEMALES.mat', cytokine_type, covs_type);
+        save(save_path, 'eLABE_predict_origCOV', 'eLABE_predictNULL_origCOV', '-v7.3');
+        
+    elseif strcompi(corrmat_path, 'cytokine_data/full_cytokines_corrmat_fullterm_latepreterm_MALES.mat')
+        plot_title = sprintf('%s PREDICTION, ORIG COVARIATES, MALES', cytokine_type);
+        title(plot_title)
+
+        filename = sprintf('figures/%s_pred_origcovs_MALES.fig', cytokine_type);
+        saveas(fig, filename)
+
+        % save models 
+        covs_type = 'origcovs'; % will need to edit this later most likely 
+        save_path = sprintf('cytokine_data/%s_pred_%s_MALES.mat', cytokine_type, covs_type);
+        save(save_path, 'eLABE_predict_origCOV', 'eLABE_predictNULL_origCOV', '-v7.3');
+        
+    else 
+        plot_title = sprintf('%s PREDICTION, ORIG COVARIATES', cytokine_type);
+        title(plot_title)
+
+        filename = sprintf('figures/%s_pred_origcovs.fig', cytokine_type);
+        saveas(fig, filename)
+
+        % save models 
+        covs_type = 'origcovs'; % will need to edit this later most likely 
+        save_path = sprintf('cytokine_data/%s_pred_%s.mat', cytokine_type, covs_type);
+        save(save_path, 'eLABE_predict_origCOV', 'eLABE_predictNULL_origCOV', '-v7.3');
+    end 
     toc
-    
+
 else 
     fprintf("INCORRECT COVARIATE INPUT. Available options: 'Y' or 'N'")
 
