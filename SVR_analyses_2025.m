@@ -1,30 +1,35 @@
 % -----------------------Samples----------------------------------------
 
-% Fullterm - n=241 + LatePreterm - n=33
-% Our cytonkines spreadsheet - n=283
+% Our cytonkines spreadsheet:
+%       Full sample n=294
+%       Fullterm + latepreterm n=284
 
 % ----------------------Load in & Organize Data--------------------------
-spreadsheet = readtable('cytokine_data/cytokines_data_sheet.csv');
+spreadsheet = readtable('cytokine_data/cytokines_data_sheet_fullterm_latepreterm.csv');
+
+% splitting by sex
+% T_males = spreadsheet(spreadsheet.child_sex == 1, :);
+% T_females = spreadsheet(spreadsheet.child_sex == 2, :);
 
 % generating correlations matrices (run only once and then save as .mat file)
-% num_subjects = height(spreadsheet);
-% subjects = spreadsheet.modid;
-% 
-% no_mat = 0;
-% for n = 1:num_subjects
-%     if exist(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_a_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt'], 'file')
-%         temp_corrmat = load(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_a_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt']);
-%         corrmat(:,:,n) = temp_corrmat;
-%     elseif exist(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_b_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt'],'file')
-%         temp_corrmat = load(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_b_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt']);
-%         corrmat(:,:,n) = temp_corrmat;
-%     else 
-%         no_mat = no_mat+1;
-%         list_no_mat(no_mat) = n;
-%     end
-% end
-% 
-% save('full_cytokines_corrmat_MR.mat', 'corrmat')
+num_subjects = height(T_females);
+subjects = T_females.modid;
+
+no_mat = 0;
+for n = 1:num_subjects
+    if exist(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_a_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt'], 'file')
+        temp_corrmat = load(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_a_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt']);
+        corrmat(:,:,n) = temp_corrmat;
+    elseif exist(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_b_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt'],'file')
+        temp_corrmat = load(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_b_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt']);
+        corrmat(:,:,n) = temp_corrmat;
+    else 
+        no_mat = no_mat+1;
+        list_no_mat(no_mat) = n;
+    end
+end
+
+save('cytokine_data/full_cytokines_corrmat_fullterm_latepreterm_FEMALES.mat', 'corrmat')
 
 % load in corrmat
 load('cytokine_data/full_cytokines_corrmat.mat')
