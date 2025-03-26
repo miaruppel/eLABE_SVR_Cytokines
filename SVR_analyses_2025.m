@@ -10,6 +10,8 @@ spreadsheet = readtable('cytokine_data/cytokines_data_sheet_fullterm_latepreterm
 % splitting by sex
 % T_males = spreadsheet(spreadsheet.child_sex == 1, :);
 % T_females = spreadsheet(spreadsheet.child_sex == 2, :);
+% writetable(T_males, 'cytokine_data/cytokines_data_sheet_fullterm_latepreterm_MALES.csv')
+% writetable(T_females, 'cytokine_data/cytokines_data_sheet_fullterm_latepreterm_FEMALES.csv')
 
 % generating correlations matrices (run only once and then save as .mat file)
 num_subjects = height(T_females);
