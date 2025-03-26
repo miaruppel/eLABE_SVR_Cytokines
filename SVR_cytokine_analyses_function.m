@@ -86,7 +86,8 @@ elseif strcmpi(covs_Y_or_N, 'Y') % including covariates in the model
     num_scrambles = 10;
 
     % change this list when we want to test different covariates
-    covariate_list = {'disadv_prenatal', 'mri_test_pma_scan_dob', 'screen_delivery_ga_weeks', 'child_sex', 'mat_med_risk_sum', 'MEAN_FD_ALL'};
+    % IMPORTANT: removed 'child_sex' when splitting by sex 
+    covariate_list = {'disadv_prenatal', 'mri_test_pma_scan_dob', 'screen_delivery_ga_weeks', 'mat_med_risk_sum', 'MEAN_FD_ALL'};
 
     %%%%%% OUTPUTS %%%%%%%%
     % change the suffix (i.e., origCOV) when different covariates/samples
