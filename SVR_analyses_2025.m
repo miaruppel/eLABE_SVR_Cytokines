@@ -14,27 +14,27 @@ spreadsheet = readtable('cytokine_data/cytokines_data_sheet_fullterm_latepreterm
 % writetable(T_females, 'cytokine_data/cytokines_data_sheet_fullterm_latepreterm_FEMALES.csv')
 
 % generating correlations matrices (run only once and then save as .mat file)
-num_subjects = height(T_females);
-subjects = T_females.modid;
-
-no_mat = 0;
-for n = 1:num_subjects
-    if exist(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_a_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt'], 'file')
-        temp_corrmat = load(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_a_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt']);
-        corrmat(:,:,n) = temp_corrmat;
-    elseif exist(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_b_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt'],'file')
-        temp_corrmat = load(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_b_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt']);
-        corrmat(:,:,n) = temp_corrmat;
-    else 
-        no_mat = no_mat+1;
-        list_no_mat(no_mat) = n;
-    end
-end
-
-save('cytokine_data/full_cytokines_corrmat_fullterm_latepreterm_FEMALES.mat', 'corrmat')
+% num_subjects = height(T_females);
+% subjects = T_females.modid;
+% 
+% no_mat = 0;
+% for n = 1:num_subjects
+%     if exist(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_a_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt'], 'file')
+%         temp_corrmat = load(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_a_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt']);
+%         corrmat(:,:,n) = temp_corrmat;
+%     elseif exist(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_b_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt'],'file')
+%         temp_corrmat = load(['/data/smyser/smyser1/wunder/eLABe/gordon_pconns_plus_atlas_subcortical/full_mats/', subjects{n}, '_V1_b_gordon_parcel_plus_term_N50_eLABe_atlas_subcort.txt']);
+%         corrmat(:,:,n) = temp_corrmat;
+%     else 
+%         no_mat = no_mat+1;
+%         list_no_mat(no_mat) = n;
+%     end
+% end
+% 
+% save('cytokine_data/full_cytokines_corrmat_fullterm_latepreterm_FEMALES.mat', 'corrmat')
 
 % load in corrmat
-load('cytokine_data/full_cytokines_corrmat.mat')
+load('cytokine_data/full_cytokines_corrmat_fullterm_latepreterm.mat')
 
 % -------------------ACTUAL MODELS vs. NULL MODELS----------------------
 
@@ -50,7 +50,7 @@ load('cytokine_data/full_cytokines_corrmat.mat')
 
 % Eventually we will compare the actual and null model distributions 
 
-% ----------------------IL6, ALL SAMPLES, NO COVARIATES---------------------
+% ----------------------PMA, ALL SAMPLES, NO COVARIATES---------------------
 tic
 ind_test_set_corrmat = 0; % we don't need this scenario so set to zero
 ind_test_set_labels = 0; % same here
@@ -64,13 +64,13 @@ if isempty(gcp('nocreate'))
 end
 
 % actual models
-eLABE_predict_il6_noCOV = tenFOLD_svm_scripts_matlab_parallel(corrmat, spreadsheet.il6_avg, ind_test_set_corrmat, ind_test_set_labels, num_partitions);
+eLABE_predict_il6_noCOV = tenFOLD_svm_scripts_matlab_parallel(corrmat, spreadsheet.mri_test_pma_scan_dob, ind_test_set_corrmat, ind_test_set_labels, num_partitions);
 
 % null models
 parfor i = 1:num_scrambles
     rng('shuffle');  % shuffle the random number generator
     idx_rand = randperm(height(spreadsheet));
-    fakeIL6 = spreadsheet.il6_avg(idx_rand);
+    fakeIL6 = spreadsheet.mri_test_pma_scan_dob(idx_rand);
     eLABE_predict_il6_NULL_noCOV{i} = tenFOLD_svm_scripts_matlab(corrmat, fakeIL6, ind_test_set_corrmat, ind_test_set_labels, num_partitions);
 end
 
@@ -86,12 +86,12 @@ end
 set(gcf,'color','white')
 box off
 
-xlabel('Train/Test Partitions Sorted by Prediction of IL-6')
+xlabel('Train/Test Partitions Sorted by Prediction of PMA')
 ylabel('R2')
 
 axis([0 101 0 0.08])
 
-title('IL6 PREDICTION, NO COVARIATES')
+title('PMA PREDICTION, NO COVARIATES')
 toc
 
 % ----------------------IL6, ALL SAMPLES, ORIGINAL COVARIATES---------------------

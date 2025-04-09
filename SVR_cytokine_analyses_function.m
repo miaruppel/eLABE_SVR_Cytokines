@@ -67,12 +67,12 @@ if strcmpi(covs_Y_or_N, 'N') % no covariate models
 
     axis([0 101 0 0.08])
 
-    plot_title = sprintf('%s PREDICTION, NO COVARIATES', cytokine_type);
+    plot_title = sprintf('%s PREDICTION, NO COVARIATES, FEMALES', cytokine_type);
     title(plot_title)
     
     % save models 
     covs_type = 'nocovs'; % will need to edit this later most likely 
-    save_path = sprintf('cytokine_data/%s_pred_%s.mat', cytokine_type, covs_type);
+    save_path = sprintf('cytokine_data/%s_pred_%s_FEMALES.mat', cytokine_type, covs_type);
     save(save_path, 'eLABE_predict_noCOV', 'eLABE_predict_NULL_noCOV', '-v7.3');
     toc
 
@@ -112,7 +112,7 @@ elseif strcmpi(covs_Y_or_N, 'Y') % including covariates in the model
     axis([0 101 0 0.08])
     
     % quick and dirty split of males/females; sloppy and repetitive code that should be fixed later
-    if strcompi(corrmat_path, 'cytokine_data/full_cytokines_corrmat_fullterm_latepreterm_FEMALES.mat')
+    if strcmpi(corrmat_path, 'cytokine_data/full_cytokines_corrmat_fullterm_latepreterm_FEMALES.mat')
         plot_title = sprintf('%s PREDICTION, ORIG COVARIATES, FEMALES', cytokine_type);
         title(plot_title)
 
@@ -124,7 +124,7 @@ elseif strcmpi(covs_Y_or_N, 'Y') % including covariates in the model
         save_path = sprintf('cytokine_data/%s_pred_%s_FEMALES.mat', cytokine_type, covs_type);
         save(save_path, 'eLABE_predict_origCOV', 'eLABE_predictNULL_origCOV', '-v7.3');
         
-    elseif strcompi(corrmat_path, 'cytokine_data/full_cytokines_corrmat_fullterm_latepreterm_MALES.mat')
+    elseif strcmpi(corrmat_path, 'cytokine_data/full_cytokines_corrmat_fullterm_latepreterm_MALES.mat')
         plot_title = sprintf('%s PREDICTION, ORIG COVARIATES, MALES', cytokine_type);
         title(plot_title)
 
